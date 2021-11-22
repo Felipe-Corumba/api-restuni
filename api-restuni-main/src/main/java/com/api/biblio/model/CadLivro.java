@@ -11,6 +11,14 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+//import para join tables
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+
+
 
 @Entity
 @Table(name="TB_LIVRO")
@@ -35,6 +43,17 @@ public class CadLivro implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy" )
 	private LocalDate dataEmprestimo;
 	private LocalDate dataDevolucao;
+	//private Long registromatricula;
+
+	@ManyToOne
+	@JoinColumn(name = "registromatricula")
+	private CadUsuario registromatricula;
+
+	@ManyToMany
+	@JoinTable(
+	name = "quati_rm",
+	joinColumns = @JoinColumn(
+	name = "registromatricula", referencedColumnName = "registromatricula"))
 	
 	public String getResumo() {
 		return resumo;
@@ -43,16 +62,7 @@ public class CadLivro implements Serializable {
 	public void setResumo(String resumo) {
 		this.resumo = resumo;
 	}
-	private Long RM;
-
-	public Long getRM() {
-		return RM;
-	}
-
-	public void setRM(Long RM) {
-		this.RM = RM;
-	}
-
+	
 	public int getStatus() {
 		return status;
 	}
@@ -73,8 +83,8 @@ public class CadLivro implements Serializable {
 		return dataDevolucao;
 	}
 
-	public void setDataDevolucao(LocalDate dataEmprestimo) {
-		this.dataDevolucao = dataEmprestimo + 20; // ver como trabalhar na string
+	public void setDataDevolucao(LocalDate getDataDevolucao) {
+		this.dataDevolucao = getDataDevolucao; // ver como trabalhar na string
 	}
 
 	public Long getId() {
